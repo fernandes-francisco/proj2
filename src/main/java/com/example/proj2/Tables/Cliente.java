@@ -1,4 +1,4 @@
-package com.example.proj2;
+package com.example.proj2.Tables;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -9,10 +9,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "\"Fornecedor\"", schema = "public")
-public class Fornecedor {
+@Table(name = "\"Cliente\"", schema = "public")
+public class Cliente {
     @Id
-    @Column(name = "\"IdFornecedor\"", nullable = false, precision = 8)
+    @Column(name = "\"IdCliente\"", nullable = false, precision = 8)
     private BigDecimal id;
 
     @Column(name = "\"Nome\"", length = 50)
@@ -29,8 +29,11 @@ public class Fornecedor {
     @JoinColumn(name = "\"IdEndereco\"")
     private Endereco idEndereco;
 
-    @OneToMany(mappedBy = "idFornecedor")
-    private Set<EncomendaFornecedor> encomendaFornecedors = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "idCliente")
+    private Set<FaturaCliente> faturaClientes = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idCliente")
+    private Set<Veiculo> veiculos = new LinkedHashSet<>();
 
     public BigDecimal getId() {
         return id;
@@ -72,12 +75,20 @@ public class Fornecedor {
         this.idEndereco = idEndereco;
     }
 
-    public Set<EncomendaFornecedor> getEncomendaFornecedors() {
-        return encomendaFornecedors;
+    public Set<FaturaCliente> getFaturaClientes() {
+        return faturaClientes;
     }
 
-    public void setEncomendaFornecedors(Set<EncomendaFornecedor> encomendaFornecedors) {
-        this.encomendaFornecedors = encomendaFornecedors;
+    public void setFaturaClientes(Set<FaturaCliente> faturaClientes) {
+        this.faturaClientes = faturaClientes;
+    }
+
+    public Set<Veiculo> getVeiculos() {
+        return veiculos;
+    }
+
+    public void setVeiculos(Set<Veiculo> veiculos) {
+        this.veiculos = veiculos;
     }
 
 }

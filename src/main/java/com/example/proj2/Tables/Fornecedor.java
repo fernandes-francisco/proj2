@@ -1,4 +1,4 @@
-package com.example.proj2;
+package com.example.proj2.Tables;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -9,10 +9,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "\"Cliente\"", schema = "public")
-public class Cliente {
+@Table(name = "\"Fornecedor\"", schema = "public")
+public class Fornecedor {
     @Id
-    @Column(name = "\"IdCliente\"", nullable = false, precision = 8)
+    @Column(name = "\"IdFornecedor\"", nullable = false, precision = 8)
     private BigDecimal id;
 
     @Column(name = "\"Nome\"", length = 50)
@@ -27,13 +27,10 @@ public class Cliente {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "\"IdEndereco\"")
-    private com.example.proj2.Endereco idEndereco;
+    private Endereco idEndereco;
 
-    @OneToMany(mappedBy = "idCliente")
-    private Set<com.example.proj2.FaturaCliente> faturaClientes = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idCliente")
-    private Set<com.example.proj2.Veiculo> veiculos = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "idFornecedor")
+    private Set<EncomendaFornecedor> encomendaFornecedors = new LinkedHashSet<>();
 
     public BigDecimal getId() {
         return id;
@@ -67,28 +64,20 @@ public class Cliente {
         this.contacto = contacto;
     }
 
-    public com.example.proj2.Endereco getIdEndereco() {
+    public Endereco getIdEndereco() {
         return idEndereco;
     }
 
-    public void setIdEndereco(com.example.proj2.Endereco idEndereco) {
+    public void setIdEndereco(Endereco idEndereco) {
         this.idEndereco = idEndereco;
     }
 
-    public Set<com.example.proj2.FaturaCliente> getFaturaClientes() {
-        return faturaClientes;
+    public Set<EncomendaFornecedor> getEncomendaFornecedors() {
+        return encomendaFornecedors;
     }
 
-    public void setFaturaClientes(Set<com.example.proj2.FaturaCliente> faturaClientes) {
-        this.faturaClientes = faturaClientes;
-    }
-
-    public Set<com.example.proj2.Veiculo> getVeiculos() {
-        return veiculos;
-    }
-
-    public void setVeiculos(Set<com.example.proj2.Veiculo> veiculos) {
-        this.veiculos = veiculos;
+    public void setEncomendaFornecedors(Set<EncomendaFornecedor> encomendaFornecedors) {
+        this.encomendaFornecedors = encomendaFornecedors;
     }
 
 }

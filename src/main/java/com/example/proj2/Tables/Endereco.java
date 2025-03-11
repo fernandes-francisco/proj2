@@ -1,4 +1,4 @@
-package com.example.proj2;
+package com.example.proj2.Tables;
 
 import jakarta.persistence.*;
 
@@ -26,7 +26,7 @@ public class Endereco {
     private Set<Cliente> clientes = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idEndereco")
-    private Set<com.example.proj2.Fornecedor> fornecedors = new LinkedHashSet<>();
+    private Set<Fornecedor> fornecedors = new LinkedHashSet<>();
 
     public BigDecimal getId() {
         return id;
@@ -68,11 +68,11 @@ public class Endereco {
         this.clientes = clientes;
     }
 
-    public Set<com.example.proj2.Fornecedor> getFornecedors() {
+    public Set<Fornecedor> getFornecedors() {
         return fornecedors;
     }
 
-    public void setFornecedors(Set<com.example.proj2.Fornecedor> fornecedors) {
+    public void setFornecedors(Set<Fornecedor> fornecedors) {
         this.fornecedors = fornecedors;
     }
 

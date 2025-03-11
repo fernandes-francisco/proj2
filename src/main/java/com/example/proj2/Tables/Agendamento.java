@@ -1,4 +1,4 @@
-package com.example.proj2;
+package com.example.proj2.Tables;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -26,12 +26,12 @@ public class Agendamento {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "\"IdVeiculo\"")
-    private com.example.proj2.Veiculo idVeiculo;
+    private Veiculo idVeiculo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "\"IdFuncionario\"")
-    private com.example.proj2.Funcionario idFuncionario;
+    private Funcionario idFuncionario;
 
     public BigDecimal getId() {
         return id;
@@ -65,19 +65,19 @@ public class Agendamento {
         this.observacoes = observacoes;
     }
 
-    public com.example.proj2.Veiculo getIdVeiculo() {
+    public Veiculo getIdVeiculo() {
         return idVeiculo;
     }
 
-    public void setIdVeiculo(com.example.proj2.Veiculo idVeiculo) {
+    public void setIdVeiculo(Veiculo idVeiculo) {
         this.idVeiculo = idVeiculo;
     }
 
-    public com.example.proj2.Funcionario getIdFuncionario() {
+    public Funcionario getIdFuncionario() {
         return idFuncionario;
     }
 
-    public void setIdFuncionario(com.example.proj2.Funcionario idFuncionario) {
+    public void setIdFuncionario(Funcionario idFuncionario) {
         this.idFuncionario = idFuncionario;
     }
 

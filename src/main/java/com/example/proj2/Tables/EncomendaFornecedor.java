@@ -1,4 +1,4 @@
-package com.example.proj2;
+package com.example.proj2.Tables;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -25,13 +25,13 @@ public class EncomendaFornecedor {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "\"IdFornecedor\"")
-    private com.example.proj2.Fornecedor idFornecedor;
+    private Fornecedor idFornecedor;
 
     @OneToMany(mappedBy = "idEncFornecedor")
-    private Set<com.example.proj2.FaturaFornecedor> faturaFornecedors = new LinkedHashSet<>();
+    private Set<FaturaFornecedor> faturaFornecedors = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idEncFornecedor")
-    private Set<com.example.proj2.LinhaEncFornecedor> linhaEncFornecedors = new LinkedHashSet<>();
+    private Set<LinhaEncFornecedor> linhaEncFornecedors = new LinkedHashSet<>();
 
     public BigDecimal getId() {
         return id;
@@ -57,27 +57,27 @@ public class EncomendaFornecedor {
         this.valorTotal = valorTotal;
     }
 
-    public com.example.proj2.Fornecedor getIdFornecedor() {
+    public Fornecedor getIdFornecedor() {
         return idFornecedor;
     }
 
-    public void setIdFornecedor(com.example.proj2.Fornecedor idFornecedor) {
+    public void setIdFornecedor(Fornecedor idFornecedor) {
         this.idFornecedor = idFornecedor;
     }
 
-    public Set<com.example.proj2.FaturaFornecedor> getFaturaFornecedors() {
+    public Set<FaturaFornecedor> getFaturaFornecedors() {
         return faturaFornecedors;
     }
 
-    public void setFaturaFornecedors(Set<com.example.proj2.FaturaFornecedor> faturaFornecedors) {
+    public void setFaturaFornecedors(Set<FaturaFornecedor> faturaFornecedors) {
         this.faturaFornecedors = faturaFornecedors;
     }
 
-    public Set<com.example.proj2.LinhaEncFornecedor> getLinhaEncFornecedors() {
+    public Set<LinhaEncFornecedor> getLinhaEncFornecedors() {
         return linhaEncFornecedors;
     }
 
-    public void setLinhaEncFornecedors(Set<com.example.proj2.LinhaEncFornecedor> linhaEncFornecedors) {
+    public void setLinhaEncFornecedors(Set<LinhaEncFornecedor> linhaEncFornecedors) {
         this.linhaEncFornecedors = linhaEncFornecedors;
     }
 

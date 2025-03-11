@@ -1,4 +1,4 @@
-package com.example.proj2;
+package com.example.proj2.Tables;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -6,14 +6,12 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Entity
-@Table(name = "\"FaturaCliente\"", schema = "public")
-public class FaturaCliente {
+@Table(name = "\"FaturaFornecedor\"", schema = "public")
+public class FaturaFornecedor {
     @Id
-    @Column(name = "\"nFatura\"", nullable = false, precision = 8)
+    @Column(name = "\"IdFaturaFornecedor\"", nullable = false, precision = 8)
     private BigDecimal id;
 
     @Column(name = "\"Data\"")
@@ -24,11 +22,8 @@ public class FaturaCliente {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "\"IdCliente\"")
-    private Cliente idCliente;
-
-    @OneToMany(mappedBy = "nFatura")
-    private Set<com.example.proj2.Reparacao> reparacaos = new LinkedHashSet<>();
+    @JoinColumn(name = "\"IdEncFornecedor\"")
+    private EncomendaFornecedor idEncFornecedor;
 
     public BigDecimal getId() {
         return id;
@@ -54,20 +49,12 @@ public class FaturaCliente {
         this.valorTotal = valorTotal;
     }
 
-    public Cliente getIdCliente() {
-        return idCliente;
+    public EncomendaFornecedor getIdEncFornecedor() {
+        return idEncFornecedor;
     }
 
-    public void setIdCliente(Cliente idCliente) {
-        this.idCliente = idCliente;
-    }
-
-    public Set<com.example.proj2.Reparacao> getReparacaos() {
-        return reparacaos;
-    }
-
-    public void setReparacaos(Set<com.example.proj2.Reparacao> reparacaos) {
-        this.reparacaos = reparacaos;
+    public void setIdEncFornecedor(EncomendaFornecedor idEncFornecedor) {
+        this.idEncFornecedor = idEncFornecedor;
     }
 
 }

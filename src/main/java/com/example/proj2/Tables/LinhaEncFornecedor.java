@@ -1,4 +1,4 @@
-package com.example.proj2;
+package com.example.proj2.Tables;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -16,7 +16,7 @@ public class LinhaEncFornecedor {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "\"IdPeca\"", nullable = false)
-    private com.example.proj2.Peca idPeca;
+    private Peca idPeca;
 
     @MapsId("idEncFornecedor")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -38,11 +38,11 @@ public class LinhaEncFornecedor {
         this.id = id;
     }
 
-    public com.example.proj2.Peca getIdPeca() {
+    public Peca getIdPeca() {
         return idPeca;
     }
 
-    public void setIdPeca(com.example.proj2.Peca idPeca) {
+    public void setIdPeca(Peca idPeca) {
         this.idPeca = idPeca;
     }
 

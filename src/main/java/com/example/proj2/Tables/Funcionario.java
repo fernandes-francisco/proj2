@@ -1,4 +1,4 @@
-package com.example.proj2;
+package com.example.proj2.Tables;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -21,13 +21,13 @@ public class Funcionario {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "\"Tipo\"")
-    private com.example.proj2.TipoFuncionario tipo;
+    private TipoFuncionario tipo;
 
     @OneToMany(mappedBy = "idFuncionario")
     private Set<Agendamento> agendamentos = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idFuncionario")
-    private Set<com.example.proj2.Reparacao> reparacaos = new LinkedHashSet<>();
+    private Set<Reparacao> reparacaos = new LinkedHashSet<>();
 
     public BigDecimal getId() {
         return id;
@@ -45,11 +45,11 @@ public class Funcionario {
         this.nome = nome;
     }
 
-    public com.example.proj2.TipoFuncionario getTipo() {
+    public TipoFuncionario getTipo() {
         return tipo;
     }
 
-    public void setTipo(com.example.proj2.TipoFuncionario tipo) {
+    public void setTipo(TipoFuncionario tipo) {
         this.tipo = tipo;
     }
 
@@ -61,11 +61,11 @@ public class Funcionario {
         this.agendamentos = agendamentos;
     }
 
-    public Set<com.example.proj2.Reparacao> getReparacaos() {
+    public Set<Reparacao> getReparacaos() {
         return reparacaos;
     }
 
-    public void setReparacaos(Set<com.example.proj2.Reparacao> reparacaos) {
+    public void setReparacaos(Set<Reparacao> reparacaos) {
         this.reparacaos = reparacaos;
     }
 

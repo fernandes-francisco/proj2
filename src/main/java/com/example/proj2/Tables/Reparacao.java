@@ -1,4 +1,4 @@
-package com.example.proj2;
+package com.example.proj2.Tables;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -39,7 +39,7 @@ public class Reparacao {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "\"IdVeiculo\"")
-    private com.example.proj2.Veiculo idVeiculo;
+    private Veiculo idVeiculo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.RESTRICT)
@@ -49,7 +49,7 @@ public class Reparacao {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "\"IdServico\"")
-    private com.example.proj2.Servico idServico;
+    private Servico idServico;
 
     @OneToMany(mappedBy = "idReparacao")
     private Set<LinhaReparacao> linhaReparacaos = new LinkedHashSet<>();
@@ -110,11 +110,11 @@ public class Reparacao {
         this.nFatura = nFatura;
     }
 
-    public com.example.proj2.Veiculo getIdVeiculo() {
+    public Veiculo getIdVeiculo() {
         return idVeiculo;
     }
 
-    public void setIdVeiculo(com.example.proj2.Veiculo idVeiculo) {
+    public void setIdVeiculo(Veiculo idVeiculo) {
         this.idVeiculo = idVeiculo;
     }
 
@@ -126,11 +126,11 @@ public class Reparacao {
         this.idFuncionario = idFuncionario;
     }
 
-    public com.example.proj2.Servico getIdServico() {
+    public Servico getIdServico() {
         return idServico;
     }
 
-    public void setIdServico(com.example.proj2.Servico idServico) {
+    public void setIdServico(Servico idServico) {
         this.idServico = idServico;
     }
 
