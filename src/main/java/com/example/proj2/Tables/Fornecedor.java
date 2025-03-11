@@ -26,8 +26,8 @@ public class Fornecedor {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "\"IdEndereco\"")
-    private Endereco idEndereco;
+    @JoinColumn(name = "\"CodPostal\"")
+    private CodPostal idCodPostal;
 
     @OneToMany(mappedBy = "idFornecedor")
     private Set<EncomendaFornecedor> encomendaFornecedors = new LinkedHashSet<>();
@@ -64,12 +64,12 @@ public class Fornecedor {
         this.contacto = contacto;
     }
 
-    public Endereco getIdEndereco() {
-        return idEndereco;
+    public CodPostal getIdCodPostal() {
+        return idCodPostal;
     }
 
-    public void setIdEndereco(Endereco idEndereco) {
-        this.idEndereco = idEndereco;
+    public void setIdEndereco(CodPostal idCodPostal) {
+        this.idCodPostal = idCodPostal;
     }
 
     public Set<EncomendaFornecedor> getEncomendaFornecedors() {
