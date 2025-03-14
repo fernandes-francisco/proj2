@@ -1,57 +1,29 @@
 package com.example.proj2.Tables;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
+@Data
 @Entity
-@Table(name = "\"Servico\"", schema = "public")
-public class Servico {
-    @Id
-    @Column(name = "\"IdServico\"", nullable = false, precision = 8)
-    private BigDecimal id;
+@Table(name = "Servico")
+public class Servico implements Serializable {
 
-    @Column(name = "\"Nome\"", length = 50)
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @Column(name = "IdServico", nullable = false)
+    private BigDecimal idServico;
+
+    @Column(name = "Nome")
     private String nome;
 
-    @Column(name = "\"Descricao\"", length = 100)
+    @Column(name = "Descricao")
     private String descricao;
-
-    @OneToMany(mappedBy = "idServico")
-    private Set<Reparacao> reparacaos = new LinkedHashSet<>();
-
-    public BigDecimal getId() {
-        return id;
-    }
-
-    public void setId(BigDecimal id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public Set<Reparacao> getReparacaos() {
-        return reparacaos;
-    }
-
-    public void setReparacaos(Set<Reparacao> reparacaos) {
-        this.reparacaos = reparacaos;
-    }
 
 }

@@ -1,72 +1,35 @@
 package com.example.proj2.Tables;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
+@Data
 @Entity
-@Table(name = "\"Funcionario\"", schema = "public")
-public class Funcionario {
-    @Id
-    @Column(name = "\"IdFuncionario\"", nullable = false, precision = 8)
-    private BigDecimal id;
+@Table(name = "Funcionario")
+public class Funcionario implements Serializable {
 
-    @Column(name = "\"Nome\"", length = 50)
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @Column(name = "IdFuncionario", nullable = false)
+    private BigDecimal idFuncionario;
+
+    @Column(name = "Nome")
     private String nome;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "\"Tipo\"")
-    private TipoFuncionario tipo;
+    @Column(name = "Tipo")
+    private BigDecimal tipo;
 
-    @OneToMany(mappedBy = "idFuncionario")
-    private Set<Agendamento> agendamentos = new LinkedHashSet<>();
+    @Column(name = "username")
+    private String username;
 
-    @OneToMany(mappedBy = "idFuncionario")
-    private Set<Reparacao> reparacaos = new LinkedHashSet<>();
-
-    public BigDecimal getId() {
-        return id;
-    }
-
-    public void setId(BigDecimal id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public TipoFuncionario getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(TipoFuncionario tipo) {
-        this.tipo = tipo;
-    }
-
-    public Set<Agendamento> getAgendamentos() {
-        return agendamentos;
-    }
-
-    public void setAgendamentos(Set<Agendamento> agendamentos) {
-        this.agendamentos = agendamentos;
-    }
-
-    public Set<Reparacao> getReparacaos() {
-        return reparacaos;
-    }
-
-    public void setReparacaos(Set<Reparacao> reparacaos) {
-        this.reparacaos = reparacaos;
-    }
+    @Column(name = "password")
+    private String password;
 
 }

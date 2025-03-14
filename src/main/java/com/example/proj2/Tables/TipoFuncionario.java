@@ -1,46 +1,26 @@
 package com.example.proj2.Tables;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
+@Data
 @Entity
-@Table(name = "\"TipoFuncionario\"", schema = "public")
-public class TipoFuncionario {
+@Table(name = "TipoFuncionario")
+public class TipoFuncionario implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
-    @Column(name = "\"IdTipo\"", nullable = false, precision = 8)
-    private BigDecimal id;
+    @Column(name = "IdTipo", nullable = false)
+    private BigDecimal idTipo;
 
-    @Column(name = "\"TipoFuncionario\"", length = 50)
+    @Column(name = "TipoFuncionario")
     private String tipoFuncionario;
-
-    @OneToMany(mappedBy = "tipo")
-    private Set<Funcionario> funcionarios = new LinkedHashSet<>();
-
-    public BigDecimal getId() {
-        return id;
-    }
-
-    public void setId(BigDecimal id) {
-        this.id = id;
-    }
-
-    public String getTipoFuncionario() {
-        return tipoFuncionario;
-    }
-
-    public void setTipoFuncionario(String tipoFuncionario) {
-        this.tipoFuncionario = tipoFuncionario;
-    }
-
-    public Set<Funcionario> getFuncionarios() {
-        return funcionarios;
-    }
-
-    public void setFuncionarios(Set<Funcionario> funcionarios) {
-        this.funcionarios = funcionarios;
-    }
 
 }

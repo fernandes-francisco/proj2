@@ -1,73 +1,33 @@
 package com.example.proj2.Tables;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
+@Data
 @Entity
-@Table(name = "\"LinhaEncFornecedor\"", schema = "public")
-public class LinhaEncFornecedor {
-    @EmbeddedId
-    private LinhaEncFornecedorId id;
+@Table(name = "LinhaEncFornecedor")
+public class LinhaEncFornecedor implements Serializable {
 
-    @MapsId("idPeca")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "\"IdPeca\"", nullable = false)
-    private Peca idPeca;
+    private static final long serialVersionUID = 1L;
 
-    @MapsId("idEncFornecedor")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "\"IdEncFornecedor\"", nullable = false)
-    private EncomendaFornecedor idEncFornecedor;
+    @Id
+    @Column(name = "IdPeca", nullable = false)
+    private BigDecimal idPeca;
 
-    @Column(name = "\"Qtd\"", precision = 8)
+    @Id
+    @Column(name = "IdEncFornecedor", nullable = false)
+    private BigDecimal idEncFornecedor;
+
+    @Column(name = "Qtd")
     private BigDecimal qtd;
 
-    @Column(name = "\"ValorTotal\"", precision = 8, scale = 2)
+    @Column(name = "ValorTotal")
     private BigDecimal valorTotal;
-
-    public LinhaEncFornecedorId getId() {
-        return id;
-    }
-
-    public void setId(LinhaEncFornecedorId id) {
-        this.id = id;
-    }
-
-    public Peca getIdPeca() {
-        return idPeca;
-    }
-
-    public void setIdPeca(Peca idPeca) {
-        this.idPeca = idPeca;
-    }
-
-    public EncomendaFornecedor getIdEncFornecedor() {
-        return idEncFornecedor;
-    }
-
-    public void setIdEncFornecedor(EncomendaFornecedor idEncFornecedor) {
-        this.idEncFornecedor = idEncFornecedor;
-    }
-
-    public BigDecimal getQtd() {
-        return qtd;
-    }
-
-    public void setQtd(BigDecimal qtd) {
-        this.qtd = qtd;
-    }
-
-    public BigDecimal getValorTotal() {
-        return valorTotal;
-    }
-
-    public void setValorTotal(BigDecimal valorTotal) {
-        this.valorTotal = valorTotal;
-    }
 
 }
