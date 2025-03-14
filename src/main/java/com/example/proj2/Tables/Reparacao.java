@@ -1,145 +1,51 @@
 package com.example.proj2.Tables;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.sql.Date;
 
+@Data
 @Entity
-@Table(name = "\"Reparacao\"", schema = "public")
-public class Reparacao {
+@Table(name = "Reparacao")
+public class Reparacao implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
-    @Column(name = "\"IdReparacao\"", nullable = false, precision = 8)
-    private BigDecimal id;
+    @Column(name = "IdReparacao", nullable = false)
+    private BigDecimal idReparacao;
 
-    @Column(name = "\"DataInicio\"")
-    private LocalDate dataInicio;
+    @Column(name = "DataInicio")
+    private Date dataInicio;
 
-    @Column(name = "\"DataFim\"")
-    private LocalDate dataFim;
+    @Column(name = "DataFim")
+    private Date dataFim;
 
-    @Column(name = "\"Estado\"", length = 50)
+    @Column(name = "Estado")
     private String estado;
 
-    @Column(name = "\"Descricao\"", length = 100)
+    @Column(name = "Descricao")
     private String descricao;
 
-    @Column(name = "\"ValorTotal\"", precision = 8, scale = 2)
+    @Column(name = "ValorTotal")
     private BigDecimal valorTotal;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "\"nFatura\"")
-    private FaturaCliente nFatura;
+    @Column(name = "nFatura")
+    private BigDecimal nFatura;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "\"IdVeiculo\"")
-    private Veiculo idVeiculo;
+    @Column(name = "IdVeiculo")
+    private BigDecimal idVeiculo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "\"IdFuncionario\"")
-    private Funcionario idFuncionario;
+    @Column(name = "IdFuncionario")
+    private BigDecimal idFuncionario;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "\"IdServico\"")
-    private Servico idServico;
-
-    @OneToMany(mappedBy = "idReparacao")
-    private Set<LinhaReparacao> linhaReparacaos = new LinkedHashSet<>();
-
-    public BigDecimal getId() {
-        return id;
-    }
-
-    public void setId(BigDecimal id) {
-        this.id = id;
-    }
-
-    public LocalDate getDataInicio() {
-        return dataInicio;
-    }
-
-    public void setDataInicio(LocalDate dataInicio) {
-        this.dataInicio = dataInicio;
-    }
-
-    public LocalDate getDataFim() {
-        return dataFim;
-    }
-
-    public void setDataFim(LocalDate dataFim) {
-        this.dataFim = dataFim;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public BigDecimal getValorTotal() {
-        return valorTotal;
-    }
-
-    public void setValorTotal(BigDecimal valorTotal) {
-        this.valorTotal = valorTotal;
-    }
-
-    public FaturaCliente getNFatura() {
-        return nFatura;
-    }
-
-    public void setNFatura(FaturaCliente nFatura) {
-        this.nFatura = nFatura;
-    }
-
-    public Veiculo getIdVeiculo() {
-        return idVeiculo;
-    }
-
-    public void setIdVeiculo(Veiculo idVeiculo) {
-        this.idVeiculo = idVeiculo;
-    }
-
-    public Funcionario getIdFuncionario() {
-        return idFuncionario;
-    }
-
-    public void setIdFuncionario(Funcionario idFuncionario) {
-        this.idFuncionario = idFuncionario;
-    }
-
-    public Servico getIdServico() {
-        return idServico;
-    }
-
-    public void setIdServico(Servico idServico) {
-        this.idServico = idServico;
-    }
-
-    public Set<LinhaReparacao> getLinhaReparacaos() {
-        return linhaReparacaos;
-    }
-
-    public void setLinhaReparacaos(Set<LinhaReparacao> linhaReparacaos) {
-        this.linhaReparacaos = linhaReparacaos;
-    }
+    @Column(name = "IdServico")
+    private BigDecimal idServico;
 
 }

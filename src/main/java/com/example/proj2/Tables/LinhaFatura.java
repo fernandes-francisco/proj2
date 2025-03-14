@@ -8,26 +8,26 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Date;
 
 @Data
 @Entity
-@Table(name = "EncomendaFornecedor")
-public class EncomendaFornecedor implements Serializable {
+@Table(name = "LinhaFatura")
+public class LinhaFatura implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "IdEncFornecedor", nullable = false)
-    private BigDecimal idEncFornecedor;
+    @Column(name = "nFatura", nullable = false)
+    private BigDecimal nFatura;
 
-    @Column(name = "Data")
-    private Date data;
+    @Id
+    @Column(name = "IdPeca", nullable = false)
+    private BigDecimal idPeca;
+
+    @Column(name = "Qtd")
+    private BigDecimal qtd;
 
     @Column(name = "ValorTotal")
     private BigDecimal valorTotal;
-
-    @Column(name = "IdFornecedor")
-    private BigDecimal idFornecedor;
 
 }

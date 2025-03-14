@@ -7,20 +7,19 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 @Data
 @Entity
-@Table(name = "TipoFuncionario")
-public class TipoFuncionario implements Serializable {
+@Table(name = "CodPostal")
+public class CodPostal implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "IdTipo", nullable = false)
-    private BigDecimal idTipo;
+    @Column(name = "CodPostal", nullable = false)
+    private String codPostal;
 
-    @Column(name = "TipoFuncionario")
-    private String tipoFuncionario;
+    @Column(name = "Descricao")
+    private String descricao;
 
 }
