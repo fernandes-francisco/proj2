@@ -1,4 +1,4 @@
-package com.example.proj2.Servicos;
+package com.example.proj2.Services;
 
 import com.example.proj2.Repo.PecaRepository;
 import com.example.proj2.Tables.Peca;
