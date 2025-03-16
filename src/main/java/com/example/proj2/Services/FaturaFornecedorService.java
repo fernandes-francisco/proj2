@@ -1,4 +1,4 @@
-package com.example.proj2.Servicos;
+package com.example.proj2.Services;
 
 import com.example.proj2.Repo.FaturaFornecedorRepository;
 import com.example.proj2.Tables.FaturaFornecedor;
@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.NoSuchElementException;
 
 @Service
