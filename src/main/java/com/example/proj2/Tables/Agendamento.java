@@ -1,39 +1,84 @@
 package com.example.proj2.Tables;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.Instant;
 
-@Data
 @Entity
-@Table(name = "Agendamento")
-public class Agendamento implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+@Table(name = "\"Agendamento\"", schema = "public")
+public class Agendamento {
     @Id
-    @Column(name = "IdAgendamento", nullable = false)
-    private BigDecimal idAgendamento;
+    @Column(name = "\"IdAgendamento\"", nullable = false, precision = 8)
+    private BigDecimal id;
 
-    @Column(name = "DataHora")
-    private Date dataHora;
+    @Column(name = "\"DataHora\"")
+    private Instant dataHora;
 
-    @Column(name = "EstadoPagamento")
+    @Column(name = "\"EstadoPagamento\"", length = 20)
     private String estadoPagamento;
 
-    @Column(name = "Observacoes")
+    @Column(name = "\"Observacoes\"", length = 100)
     private String observacoes;
 
-    @Column(name = "IdVeiculo")
-    private BigDecimal idVeiculo;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "\"IdVeiculo\"")
+    private Veiculo idVeiculo;
 
-    @Column(name = "IdFuncionario")
-    private BigDecimal idFuncionario;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "\"IdFuncionario\"")
+    private Funcionario idFuncionario;
+
+    public BigDecimal getId() {
+        return id;
+    }
+
+    public void setId(BigDecimal id) {
+        this.id = id;
+    }
+
+    public Instant getDataHora() {
+        return dataHora;
+    }
+
+    public void setDataHora(Instant dataHora) {
+        this.dataHora = dataHora;
+    }
+
+    public String getEstadoPagamento() {
+        return estadoPagamento;
+    }
+
+    public void setEstadoPagamento(String estadoPagamento) {
+        this.estadoPagamento = estadoPagamento;
+    }
+
+    public String getObservacoes() {
+        return observacoes;
+    }
+
+    public void setObservacoes(String observacoes) {
+        this.observacoes = observacoes;
+    }
+
+    public Veiculo getIdVeiculo() {
+        return idVeiculo;
+    }
+
+    public void setIdVeiculo(Veiculo idVeiculo) {
+        this.idVeiculo = idVeiculo;
+    }
+
+    public Funcionario getIdFuncionario() {
+        return idFuncionario;
+    }
+
+    public void setIdFuncionario(Funcionario idFuncionario) {
+        this.idFuncionario = idFuncionario;
+    }
 
 }

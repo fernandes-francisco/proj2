@@ -1,33 +1,73 @@
 package com.example.proj2.Tables;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-@Data
 @Entity
-@Table(name = "FaturaCliente")
-public class FaturaCliente implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+@Table(name = "\"FaturaCliente\"", schema = "public")
+public class FaturaCliente {
     @Id
-    @Column(name = "nFatura", nullable = false)
-    private BigDecimal nFatura;
+    @Column(name = "\"nFatura\"", nullable = false, precision = 8)
+    private BigDecimal id;
 
-    @Column(name = "Data")
-    private Date data;
+    @Column(name = "\"Data\"")
+    private LocalDate data;
 
-    @Column(name = "ValorTotal")
+    @Column(name = "\"ValorTotal\"", precision = 8, scale = 2)
     private BigDecimal valorTotal;
 
-    @Column(name = "IdCliente")
-    private BigDecimal idCliente;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "\"IdCliente\"")
+    private Cliente idCliente;
+
+    @OneToMany(mappedBy = "nFatura")
+    private Set<Reparacao> reparacaos = new LinkedHashSet<>();
+
+    public BigDecimal getId() {
+        return id;
+    }
+
+    public void setId(BigDecimal id) {
+        this.id = id;
+    }
+
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
+
+    public BigDecimal getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    public Cliente getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Cliente idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public Set<Reparacao> getReparacaos() {
+        return reparacaos;
+    }
+
+    public void setReparacaos(Set<Reparacao> reparacaos) {
+        this.reparacaos = reparacaos;
+    }
 
 }

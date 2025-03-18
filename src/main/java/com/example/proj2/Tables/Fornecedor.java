@@ -26,7 +26,7 @@ public class Fornecedor {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "\"IdEndereco\"")
+    @JoinColumn(name = "\"CodPostal\"")
     private CodPostal idCodPostal;
 
     @OneToMany(mappedBy = "idFornecedor")
@@ -64,11 +64,11 @@ public class Fornecedor {
         this.contacto = contacto;
     }
 
-    public CodPostal getIdEndereco() {
+    public CodPostal getIdCodPostal() {
         return idCodPostal;
     }
 
-    public void setIdEndereco(CodPostal idECodPostal) {
+    public void setIdEndereco(CodPostal idCodPostal) {
         this.idCodPostal = idCodPostal;
     }
 
