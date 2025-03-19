@@ -2,11 +2,12 @@ package com.example.proj2.Services;
 
 import com.example.proj2.Repo.TipoFuncionarioRepository;
 import com.example.proj2.Tables.TipoFuncionario;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -15,40 +16,37 @@ public class TipoFuncionarioService {
     @Autowired
     private TipoFuncionarioRepository tipoFuncionarioRepository;
 
-    public BigDecimal save(TipoFuncionarioVO vO) {
-        TipoFuncionario bean = new TipoFuncionario();
-        BeanUtils.copyProperties(vO, bean);
-        bean = tipoFuncionarioRepository.save(bean);
-        return bean.getIdTipo();
+    // Salva ou atualiza um tipo de funcionário
+    @Transactional
+    public BigDecimal saveTipoFuncionario(TipoFuncionario tipoFuncionario) {
+        TipoFuncionario savedTipoFuncionario = tipoFuncionarioRepository.save(tipoFuncionario);
+        return savedTipoFuncionario.getIdTipo();  // Retorna o ID do tipo de funcionário salvo
     }
 
-    public void delete(BigDecimal id) {
+    // Deleta um tipo de funcionário pelo ID
+    @Transactional
+    public void deleteTipoFuncionario(BigDecimal id) {
         tipoFuncionarioRepository.deleteById(id);
     }
 
-    public void update(BigDecimal id, TipoFuncionarioUpdateVO vO) {
-        TipoFuncionario bean = requireOne(id);
-        BeanUtils.copyProperties(vO, bean);
-        tipoFuncionarioRepository.save(bean);
+    // Atualiza os dados de um tipo de funcionário existente
+    @Transactional
+    public void updateTipoFuncionario(BigDecimal id, TipoFuncionario tipoFuncionario) {
+        TipoFuncionario existingTipoFuncionario = getTipoFuncionarioById(id);
+        existingTipoFuncionario.setTipoFuncionario(tipoFuncionario.getTipoFuncionario());
+        tipoFuncionarioRepository.save(existingTipoFuncionario);
     }
 
-    public TipoFuncionarioDTO getById(BigDecimal id) {
-        TipoFuncionario original = requireOne(id);
-        return toDTO(original);
-    }
-
-    public Page<TipoFuncionarioDTO> query(TipoFuncionarioQueryVO vO) {
-        throw new UnsupportedOperationException();
-    }
-
-    private TipoFuncionarioDTO toDTO(TipoFuncionario original) {
-        TipoFuncionarioDTO bean = new TipoFuncionarioDTO();
-        BeanUtils.copyProperties(original, bean);
-        return bean;
-    }
-
-    private TipoFuncionario requireOne(BigDecimal id) {
+    // Retorna um tipo de funcionário pelo ID
+    @Transactional
+    public TipoFuncionario getTipoFuncionarioById(BigDecimal id) {
         return tipoFuncionarioRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
+                .orElseThrow(() -> new NoSuchElementException("Tipo de funcionário não encontrado para o id: " + id));
+    }
+
+    // Retorna todos os tipos de funcionários
+    @Transactional
+    public List<TipoFuncionario> getAllTipoFuncionarios() {
+        return tipoFuncionarioRepository.findAll();
     }
 }

@@ -2,11 +2,12 @@ package com.example.proj2.Services;
 
 import com.example.proj2.Repo.LinhaReparacaoRepository;
 import com.example.proj2.Tables.LinhaReparacao;
-import org.springframework.beans.BeanUtils;
+import com.example.proj2.Tables.LinhaReparacaoId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -15,40 +16,31 @@ public class LinhaReparacaoService {
     @Autowired
     private LinhaReparacaoRepository linhaReparacaoRepository;
 
-    public BigDecimal save(LinhaReparacaoVO vO) {
-        LinhaReparacao bean = new LinhaReparacao();
-        BeanUtils.copyProperties(vO, bean);
-        bean = linhaReparacaoRepository.save(bean);
-        return bean.getIdReparacao();
+    @Transactional
+    public LinhaReparacao saveLinhaReparacao(LinhaReparacao linhaReparacao) {
+        return linhaReparacaoRepository.save(linhaReparacao);
     }
 
-    public void delete(BigDecimal id) {
+    @Transactional
+    public List<LinhaReparacao> getAllLinhaReparacoes() {
+        return linhaReparacaoRepository.findAll();
+    }
+
+    @Transactional
+    public LinhaReparacao getLinhaReparacaoById(LinhaReparacaoId id) {
+        return linhaReparacaoRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Linha de reparação não encontrada para o id: " + id));
+    }
+
+    @Transactional
+    public void deleteLinhaReparacao(LinhaReparacaoId id) {
         linhaReparacaoRepository.deleteById(id);
     }
 
-    public void update(BigDecimal id, LinhaReparacaoUpdateVO vO) {
-        LinhaReparacao bean = requireOne(id);
-        BeanUtils.copyProperties(vO, bean);
-        linhaReparacaoRepository.save(bean);
-    }
-
-    public LinhaReparacaoDTO getById(BigDecimal id) {
-        LinhaReparacao original = requireOne(id);
-        return toDTO(original);
-    }
-
-    public Page<LinhaReparacaoDTO> query(LinhaReparacaoQueryVO vO) {
-        throw new UnsupportedOperationException();
-    }
-
-    private LinhaReparacaoDTO toDTO(LinhaReparacao original) {
-        LinhaReparacaoDTO bean = new LinhaReparacaoDTO();
-        BeanUtils.copyProperties(original, bean);
-        return bean;
-    }
-
-    private LinhaReparacao requireOne(BigDecimal id) {
-        return linhaReparacaoRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
+    @Transactional
+    public void updateLinhaReparacao(LinhaReparacaoId id, LinhaReparacao linhaReparacao) {
+        LinhaReparacao existingLinhaReparacao = getLinhaReparacaoById(id);
+        existingLinhaReparacao.setQtd(linhaReparacao.getQtd());  // Atualizando a quantidade
+        linhaReparacaoRepository.save(existingLinhaReparacao);
     }
 }

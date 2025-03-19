@@ -2,11 +2,12 @@ package com.example.proj2.Services;
 
 import com.example.proj2.Repo.FaturaFornecedorRepository;
 import com.example.proj2.Tables.FaturaFornecedor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -15,40 +16,42 @@ public class FaturaFornecedorService {
     @Autowired
     private FaturaFornecedorRepository faturaFornecedorRepository;
 
-    public BigDecimal save(FaturaFornecedorVO vO) {
-        FaturaFornecedor bean = new FaturaFornecedor();
-        BeanUtils.copyProperties(vO, bean);
-        bean = faturaFornecedorRepository.save(bean);
-        return bean.getIdFaturaFornecedor();
+    // Método para salvar uma fatura de fornecedor
+    @Transactional
+    public FaturaFornecedor saveFaturaFornecedor(FaturaFornecedor faturaFornecedor) {
+        return faturaFornecedorRepository.save(faturaFornecedor);
     }
 
-    public void delete(BigDecimal id) {
+    // Método para retornar todas as faturas de fornecedores
+    @Transactional
+    public List<FaturaFornecedor> getAllFaturasFornecedores() {
+        return faturaFornecedorRepository.findAll();
+    }
+
+    // Método para retornar uma fatura de fornecedor por ID
+    @Transactional
+    public FaturaFornecedor getFaturaFornecedorById(BigDecimal id) {
+        return faturaFornecedorRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("FaturaFornecedor não encontrada: " + id));
+    }
+
+    // Método para excluir uma fatura de fornecedor por ID
+    @Transactional
+    public void deleteFaturaFornecedor(BigDecimal id) {
         faturaFornecedorRepository.deleteById(id);
     }
 
-    public void update(BigDecimal id, FaturaFornecedorUpdateVO vO) {
-        FaturaFornecedor bean = requireOne(id);
-        BeanUtils.copyProperties(vO, bean);
-        faturaFornecedorRepository.save(bean);
-    }
+    // Método para atualizar uma fatura de fornecedor
+    @Transactional
+    public FaturaFornecedor updateFaturaFornecedor(BigDecimal id, FaturaFornecedor faturaFornecedor) {
+        FaturaFornecedor existingFatura = getFaturaFornecedorById(id); // Verifica se a fatura existe
 
-    public FaturaFornecedorDTO getById(BigDecimal id) {
-        FaturaFornecedor original = requireOne(id);
-        return toDTO(original);
-    }
+        // Atualiza os campos da fatura de fornecedor
+        existingFatura.setData(faturaFornecedor.getData());
+        existingFatura.setValorTotal(faturaFornecedor.getValorTotal());
+        existingFatura.setIdEncFornecedor(faturaFornecedor.getIdEncFornecedor());
 
-    public Page<FaturaFornecedorDTO> query(FaturaFornecedorQueryVO vO) {
-        throw new UnsupportedOperationException();
-    }
-
-    private FaturaFornecedorDTO toDTO(FaturaFornecedor original) {
-        FaturaFornecedorDTO bean = new FaturaFornecedorDTO();
-        BeanUtils.copyProperties(original, bean);
-        return bean;
-    }
-
-    private FaturaFornecedor requireOne(BigDecimal id) {
-        return faturaFornecedorRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
+        // Salva as alterações
+        return faturaFornecedorRepository.save(existingFatura);
     }
 }

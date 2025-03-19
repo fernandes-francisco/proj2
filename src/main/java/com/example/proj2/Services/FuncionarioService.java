@@ -2,11 +2,12 @@ package com.example.proj2.Services;
 
 import com.example.proj2.Repo.FuncionarioRepository;
 import com.example.proj2.Tables.Funcionario;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -15,40 +16,43 @@ public class FuncionarioService {
     @Autowired
     private FuncionarioRepository funcionarioRepository;
 
-    public BigDecimal save(FuncionarioVO vO) {
-        Funcionario bean = new Funcionario();
-        BeanUtils.copyProperties(vO, bean);
-        bean = funcionarioRepository.save(bean);
-        return bean.getIdFuncionario();
+    // Método para salvar um funcionário
+    @Transactional
+    public Funcionario saveFuncionario(Funcionario funcionario) {
+        return funcionarioRepository.save(funcionario);
     }
 
-    public void delete(BigDecimal id) {
+    // Método para retornar todos os funcionários
+    @Transactional
+    public List<Funcionario> getAllFuncionarios() {
+        return funcionarioRepository.findAll();
+    }
+
+    // Método para retornar um funcionário por ID
+    @Transactional
+    public Funcionario getFuncionarioById(BigDecimal id) {
+        return funcionarioRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Funcionário não encontrado: " + id));
+    }
+
+    // Método para excluir um funcionário por ID
+    @Transactional
+    public void deleteFuncionario(BigDecimal id) {
         funcionarioRepository.deleteById(id);
     }
 
-    public void update(BigDecimal id, FuncionarioUpdateVO vO) {
-        Funcionario bean = requireOne(id);
-        BeanUtils.copyProperties(vO, bean);
-        funcionarioRepository.save(bean);
-    }
+    // Método para atualizar um funcionário
+    @Transactional
+    public Funcionario updateFuncionario(BigDecimal id, Funcionario funcionario) {
+        Funcionario existingFuncionario = getFuncionarioById(id); // Verifica se o funcionário existe
 
-    public FuncionarioDTO getById(BigDecimal id) {
-        Funcionario original = requireOne(id);
-        return toDTO(original);
-    }
+        // Atualiza os campos do funcionário
+        existingFuncionario.setNome(funcionario.getNome());
+        existingFuncionario.setTipo(funcionario.getTipo());
+        existingFuncionario.setUsername(funcionario.getUsername());
+        existingFuncionario.setPassword(funcionario.getPassword());
 
-    public Page<FuncionarioDTO> query(FuncionarioQueryVO vO) {
-        throw new UnsupportedOperationException();
-    }
-
-    private FuncionarioDTO toDTO(Funcionario original) {
-        FuncionarioDTO bean = new FuncionarioDTO();
-        BeanUtils.copyProperties(original, bean);
-        return bean;
-    }
-
-    private Funcionario requireOne(BigDecimal id) {
-        return funcionarioRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
+        // Salva as alterações
+        return funcionarioRepository.save(existingFuncionario);
     }
 }

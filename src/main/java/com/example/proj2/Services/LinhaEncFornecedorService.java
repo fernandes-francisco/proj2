@@ -2,11 +2,12 @@ package com.example.proj2.Services;
 
 import com.example.proj2.Repo.LinhaEncFornecedorRepository;
 import com.example.proj2.Tables.LinhaEncFornecedor;
-import org.springframework.beans.BeanUtils;
+import com.example.proj2.Tables.LinhaEncFornecedorId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -15,40 +16,41 @@ public class LinhaEncFornecedorService {
     @Autowired
     private LinhaEncFornecedorRepository linhaEncFornecedorRepository;
 
-    public BigDecimal save(LinhaEncFornecedorVO vO) {
-        LinhaEncFornecedor bean = new LinhaEncFornecedor();
-        BeanUtils.copyProperties(vO, bean);
-        bean = linhaEncFornecedorRepository.save(bean);
-        return bean.getIdPeca();
+    // Método para salvar uma LinhaEncFornecedor
+    @Transactional
+    public LinhaEncFornecedor saveLinhaEncFornecedor(LinhaEncFornecedor linhaEncFornecedor) {
+        return linhaEncFornecedorRepository.save(linhaEncFornecedor);
     }
 
-    public void delete(BigDecimal id) {
+    // Método para retornar todas as LinhaEncFornecedor
+    @Transactional
+    public List<LinhaEncFornecedor> getAllLinhasEncFornecedor() {
+        return linhaEncFornecedorRepository.findAll();
+    }
+
+    // Método para retornar uma LinhaEncFornecedor por ID composto
+    @Transactional
+    public LinhaEncFornecedor getLinhaEncFornecedorById(LinhaEncFornecedorId id) {
+        return linhaEncFornecedorRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("LinhaEncFornecedor não encontrada: " + id));
+    }
+
+    // Método para excluir uma LinhaEncFornecedor por ID composto
+    @Transactional
+    public void deleteLinhaEncFornecedor(LinhaEncFornecedorId id) {
         linhaEncFornecedorRepository.deleteById(id);
     }
 
-    public void update(BigDecimal id, LinhaEncFornecedorUpdateVO vO) {
-        LinhaEncFornecedor bean = requireOne(id);
-        BeanUtils.copyProperties(vO, bean);
-        linhaEncFornecedorRepository.save(bean);
-    }
+    // Método para atualizar uma LinhaEncFornecedor
+    @Transactional
+    public LinhaEncFornecedor updateLinhaEncFornecedor(LinhaEncFornecedorId id, LinhaEncFornecedor linhaEncFornecedor) {
+        LinhaEncFornecedor existingLinhaEncFornecedor = getLinhaEncFornecedorById(id);
 
-    public LinhaEncFornecedorDTO getById(BigDecimal id) {
-        LinhaEncFornecedor original = requireOne(id);
-        return toDTO(original);
-    }
+        // Atualiza os campos
+        existingLinhaEncFornecedor.setQtd(linhaEncFornecedor.getQtd());
+        existingLinhaEncFornecedor.setValorTotal(linhaEncFornecedor.getValorTotal());
 
-    public Page<LinhaEncFornecedorDTO> query(LinhaEncFornecedorQueryVO vO) {
-        throw new UnsupportedOperationException();
-    }
-
-    private LinhaEncFornecedorDTO toDTO(LinhaEncFornecedor original) {
-        LinhaEncFornecedorDTO bean = new LinhaEncFornecedorDTO();
-        BeanUtils.copyProperties(original, bean);
-        return bean;
-    }
-
-    private LinhaEncFornecedor requireOne(BigDecimal id) {
-        return linhaEncFornecedorRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
+        // Salva as alterações
+        return linhaEncFornecedorRepository.save(existingLinhaEncFornecedor);
     }
 }

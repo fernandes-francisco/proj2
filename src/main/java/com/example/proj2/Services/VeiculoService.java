@@ -2,11 +2,12 @@ package com.example.proj2.Services;
 
 import com.example.proj2.Repo.VeiculoRepository;
 import com.example.proj2.Tables.Veiculo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -15,40 +16,41 @@ public class VeiculoService {
     @Autowired
     private VeiculoRepository veiculoRepository;
 
-    public BigDecimal save(VeiculoVO vO) {
-        Veiculo bean = new Veiculo();
-        BeanUtils.copyProperties(vO, bean);
-        bean = veiculoRepository.save(bean);
-        return bean.getIdVeiculo();
+    // Salva ou atualiza um veículo
+    @Transactional
+    public BigDecimal saveVeiculo(Veiculo veiculo) {
+        Veiculo savedVeiculo = veiculoRepository.save(veiculo);
+        return savedVeiculo.getIdVeiculo();  // Retorna o ID do veículo salvo
     }
 
-    public void delete(BigDecimal id) {
+    // Deleta um veículo pelo ID
+    @Transactional
+    public void deleteVeiculo(BigDecimal id) {
         veiculoRepository.deleteById(id);
     }
 
-    public void update(BigDecimal id, VeiculoUpdateVO vO) {
-        Veiculo bean = requireOne(id);
-        BeanUtils.copyProperties(vO, bean);
-        veiculoRepository.save(bean);
+    // Atualiza os dados de um veículo existente
+    @Transactional
+    public void updateVeiculo(BigDecimal id, Veiculo veiculo) {
+        Veiculo existingVeiculo = getVeiculoById(id);
+        existingVeiculo.setMatricula(veiculo.getMatricula());
+        existingVeiculo.setMarca(veiculo.getMarca());
+        existingVeiculo.setModelo(veiculo.getModelo());
+        existingVeiculo.setAno(veiculo.getAno());
+        existingVeiculo.setIdCliente(veiculo.getIdCliente());
+        veiculoRepository.save(existingVeiculo);
     }
 
-    public VeiculoDTO getById(BigDecimal id) {
-        Veiculo original = requireOne(id);
-        return toDTO(original);
-    }
-
-    public Page<VeiculoDTO> query(VeiculoQueryVO vO) {
-        throw new UnsupportedOperationException();
-    }
-
-    private VeiculoDTO toDTO(Veiculo original) {
-        VeiculoDTO bean = new VeiculoDTO();
-        BeanUtils.copyProperties(original, bean);
-        return bean;
-    }
-
-    private Veiculo requireOne(BigDecimal id) {
+    // Retorna um veículo pelo ID
+    @Transactional
+    public Veiculo getVeiculoById(BigDecimal id) {
         return veiculoRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
+                .orElseThrow(() -> new NoSuchElementException("Veículo não encontrado para o id: " + id));
+    }
+
+    // Retorna todos os veículos
+    @Transactional
+    public List<Veiculo> getAllVeiculos() {
+        return veiculoRepository.findAll();
     }
 }

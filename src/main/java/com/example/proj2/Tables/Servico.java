@@ -4,12 +4,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Data
 @Entity
 @Table(name = "Servico")
 public class Servico implements Serializable {
@@ -26,4 +23,39 @@ public class Servico implements Serializable {
     @Column(name = "Descricao")
     private String descricao;
 
+    // Getters e Setters
+
+    public BigDecimal getIdServico() {
+        return idServico;
+    }
+
+    public void setIdServico(BigDecimal idServico) {
+        this.idServico = idServico;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    // Método toString() (opcional)
+    @Override
+    public String toString() {
+        return "Servico{" +
+                "idServico=" + idServico +
+                ", nome='" + nome + '\'' +
+                ", descricao='" + descricao + '\'' +
+                '}';
+    }
 }

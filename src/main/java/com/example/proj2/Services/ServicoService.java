@@ -2,11 +2,12 @@ package com.example.proj2.Services;
 
 import com.example.proj2.Repo.ServicoRepository;
 import com.example.proj2.Tables.Servico;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -15,40 +16,39 @@ public class ServicoService {
     @Autowired
     private ServicoRepository servicoRepository;
 
-    public BigDecimal save(ServicoVO vO) {
-        Servico bean = new Servico();
-        BeanUtils.copyProperties(vO, bean);
-        bean = servicoRepository.save(bean);
-        return bean.getIdServico();
+    // Salva ou atualiza um serviço
+    @Transactional
+    public BigDecimal saveServico(Servico servico) {
+        Servico savedServico = servicoRepository.save(servico);
+        return savedServico.getIdServico();  // Retorna o ID do serviço salvo
     }
 
-    public void delete(BigDecimal id) {
+    // Deleta um serviço pelo ID
+    @Transactional
+    public void deleteServico(BigDecimal id) {
         servicoRepository.deleteById(id);
     }
 
-    public void update(BigDecimal id, ServicoUpdateVO vO) {
-        Servico bean = requireOne(id);
-        BeanUtils.copyProperties(vO, bean);
-        servicoRepository.save(bean);
+    // Atualiza os dados de um serviço existente
+    @Transactional
+    public void updateServico(BigDecimal id, Servico servico) {
+        Servico existingServico = getServicoById(id);
+        existingServico.setNome(servico.getNome());
+        existingServico.setDescricao(servico.getDescricao());
+        servicoRepository.save(existingServico);
     }
 
-    public ServicoDTO getById(BigDecimal id) {
-        Servico original = requireOne(id);
-        return toDTO(original);
-    }
-
-    public Page<ServicoDTO> query(ServicoQueryVO vO) {
-        throw new UnsupportedOperationException();
-    }
-
-    private ServicoDTO toDTO(Servico original) {
-        ServicoDTO bean = new ServicoDTO();
-        BeanUtils.copyProperties(original, bean);
-        return bean;
-    }
-
-    private Servico requireOne(BigDecimal id) {
+    // Retorna um serviço pelo ID
+    @Transactional
+    public Servico getServicoById(BigDecimal id) {
         return servicoRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
+                .orElseThrow(() -> new NoSuchElementException("Serviço não encontrado para o id: " + id));
     }
+
+    // Retorna todos os serviços
+    @Transactional
+    public List<Servico> getAllServicos() {
+        return servicoRepository.findAll();
+    }
+
 }

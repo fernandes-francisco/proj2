@@ -2,11 +2,12 @@ package com.example.proj2.Services;
 
 import com.example.proj2.Repo.EncomendaFornecedorRepository;
 import com.example.proj2.Tables.EncomendaFornecedor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -15,40 +16,42 @@ public class EncomendaFornecedorService {
     @Autowired
     private EncomendaFornecedorRepository encomendaFornecedorRepository;
 
-    public BigDecimal save(EncomendaFornecedorVO vO) {
-        EncomendaFornecedor bean = new EncomendaFornecedor();
-        BeanUtils.copyProperties(vO, bean);
-        bean = encomendaFornecedorRepository.save(bean);
-        return bean.getIdEncFornecedor();
+    // Método para salvar uma encomenda fornecedor
+    @Transactional
+    public EncomendaFornecedor saveEncomendaFornecedor(EncomendaFornecedor encomendaFornecedor) {
+        return encomendaFornecedorRepository.save(encomendaFornecedor);
     }
 
-    public void delete(BigDecimal id) {
+    // Método para retornar todas as encomendas fornecedor
+    @Transactional
+    public List<EncomendaFornecedor> getAllEncomendasFornecedores() {
+        return encomendaFornecedorRepository.findAll();
+    }
+
+    // Método para retornar uma encomenda fornecedor por ID
+    @Transactional
+    public EncomendaFornecedor getEncomendaFornecedorById(BigDecimal id) {
+        return encomendaFornecedorRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("EncomendaFornecedor não encontrado: " + id));
+    }
+
+    // Método para excluir uma encomenda fornecedor por ID
+    @Transactional
+    public void deleteEncomendaFornecedor(BigDecimal id) {
         encomendaFornecedorRepository.deleteById(id);
     }
 
-    public void update(BigDecimal id, EncomendaFornecedorUpdateVO vO) {
-        EncomendaFornecedor bean = requireOne(id);
-        BeanUtils.copyProperties(vO, bean);
-        encomendaFornecedorRepository.save(bean);
-    }
+    // Método para atualizar uma encomenda fornecedor
+    @Transactional
+    public EncomendaFornecedor updateEncomendaFornecedor(BigDecimal id, EncomendaFornecedor encomendaFornecedor) {
+        EncomendaFornecedor existingEncomenda = getEncomendaFornecedorById(id); // Verifica se a encomenda fornecedor existe
 
-    public EncomendaFornecedorDTO getById(BigDecimal id) {
-        EncomendaFornecedor original = requireOne(id);
-        return toDTO(original);
-    }
+        // Atualiza os campos da encomenda fornecedor
+        existingEncomenda.setData(encomendaFornecedor.getData());
+        existingEncomenda.setValorTotal(encomendaFornecedor.getValorTotal());
+        existingEncomenda.setIdFornecedor(encomendaFornecedor.getIdFornecedor());
 
-    public Page<EncomendaFornecedorDTO> query(EncomendaFornecedorQueryVO vO) {
-        throw new UnsupportedOperationException();
-    }
-
-    private EncomendaFornecedorDTO toDTO(EncomendaFornecedor original) {
-        EncomendaFornecedorDTO bean = new EncomendaFornecedorDTO();
-        BeanUtils.copyProperties(original, bean);
-        return bean;
-    }
-
-    private EncomendaFornecedor requireOne(BigDecimal id) {
-        return encomendaFornecedorRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
+        // Salva as alterações
+        return encomendaFornecedorRepository.save(existingEncomenda);
     }
 }

@@ -4,13 +4,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 
-@Data
 @Entity
 @Table(name = "FaturaCliente")
 public class FaturaCliente implements Serializable {
@@ -30,4 +27,47 @@ public class FaturaCliente implements Serializable {
     @Column(name = "IdCliente")
     private BigDecimal idCliente;
 
+    // Getters and Setters
+    public BigDecimal getnFatura() {
+        return nFatura;
+    }
+
+    public void setnFatura(BigDecimal nFatura) {
+        this.nFatura = nFatura;
+    }
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+    public BigDecimal getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    public BigDecimal getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(BigDecimal idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    // toString method
+    @Override
+    public String toString() {
+        return "FaturaCliente{" +
+                "nFatura=" + nFatura +
+                ", data=" + data +
+                ", valorTotal=" + valorTotal +
+                ", idCliente=" + idCliente +
+                '}';
+    }
 }

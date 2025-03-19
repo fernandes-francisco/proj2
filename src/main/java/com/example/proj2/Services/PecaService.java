@@ -2,11 +2,12 @@ package com.example.proj2.Services;
 
 import com.example.proj2.Repo.PecaRepository;
 import com.example.proj2.Tables.Peca;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -15,40 +16,35 @@ public class PecaService {
     @Autowired
     private PecaRepository pecaRepository;
 
-    public BigDecimal save(PecaVO vO) {
-        Peca bean = new Peca();
-        BeanUtils.copyProperties(vO, bean);
-        bean = pecaRepository.save(bean);
-        return bean.getIdPeca();
+    @Transactional
+    public BigDecimal savePeca(Peca peca) {
+        Peca savedPeca = pecaRepository.save(peca);
+        return savedPeca.getIdPeca();
     }
 
-    public void delete(BigDecimal id) {
+    @Transactional
+    public void deletePeca(BigDecimal id) {
         pecaRepository.deleteById(id);
     }
 
-    public void update(BigDecimal id, PecaUpdateVO vO) {
-        Peca bean = requireOne(id);
-        BeanUtils.copyProperties(vO, bean);
-        pecaRepository.save(bean);
+    @Transactional
+    public void updatePeca(BigDecimal id, Peca peca) {
+        Peca existingPeca = getPecaById(id);
+        existingPeca.setNome(peca.getNome());
+        existingPeca.setReferencia(peca.getReferencia());
+        existingPeca.setPreco(peca.getPreco());
+        existingPeca.setQtd(peca.getQtd());
+        pecaRepository.save(existingPeca);
     }
 
-    public PecaDTO getById(BigDecimal id) {
-        Peca original = requireOne(id);
-        return toDTO(original);
-    }
-
-    public Page<PecaDTO> query(PecaQueryVO vO) {
-        throw new UnsupportedOperationException();
-    }
-
-    private PecaDTO toDTO(Peca original) {
-        PecaDTO bean = new PecaDTO();
-        BeanUtils.copyProperties(original, bean);
-        return bean;
-    }
-
-    private Peca requireOne(BigDecimal id) {
+    @Transactional
+    public Peca getPecaById(BigDecimal id) {
         return pecaRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
+                .orElseThrow(() -> new NoSuchElementException("Peça não encontrada para o id: " + id));
+    }
+
+    @Transactional
+    public List<Peca> getAllPecas() {
+        return pecaRepository.findAll();
     }
 }

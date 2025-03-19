@@ -1,30 +1,47 @@
 package com.example.proj2.Tables;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Data
 @Entity
 @Table(name = "LinhaReparacao")
 public class LinhaReparacao implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "IdReparacao", nullable = false)
-    private BigDecimal idReparacao;
-
-    @Id
-    @Column(name = "IdPeca", nullable = false)
-    private BigDecimal idPeca;
+    @EmbeddedId
+    private LinhaReparacaoId id;  // A chave composta é agora um objeto
 
     @Column(name = "Qtd")
     private BigDecimal qtd;
 
+    // Getters e Setters
+    public LinhaReparacaoId getId() {
+        return id;
+    }
+
+    public void setId(LinhaReparacaoId id) {
+        this.id = id;
+    }
+
+    public BigDecimal getQtd() {
+        return qtd;
+    }
+
+    public void setQtd(BigDecimal qtd) {
+        this.qtd = qtd;
+    }
+
+    // toString() method
+    @Override
+    public String toString() {
+        return "LinhaReparacao{" +
+                "id=" + id +
+                ", qtd=" + qtd +
+                '}';
+    }
 }

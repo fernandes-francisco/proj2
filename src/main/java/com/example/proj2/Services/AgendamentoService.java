@@ -2,11 +2,12 @@ package com.example.proj2.Services;
 
 import com.example.proj2.Repo.AgendamentoRepository;
 import com.example.proj2.Tables.Agendamento;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -15,40 +16,44 @@ public class AgendamentoService {
     @Autowired
     private AgendamentoRepository agendamentoRepository;
 
-    public BigDecimal save(AgendamentoVO vO) {
-        Agendamento bean = new Agendamento();
-        BeanUtils.copyProperties(vO, bean);
-        bean = agendamentoRepository.save(bean);
-        return bean.getIdAgendamento();
+    // Método para salvar um agendamento
+    @Transactional
+    public Agendamento saveAgendamento(Agendamento agendamento) {
+        return agendamentoRepository.save(agendamento);
     }
 
-    public void delete(BigDecimal id) {
+    // Método para retornar todos os agendamentos
+    @Transactional
+    public List<Agendamento> getAllAgendamentos() {
+        return agendamentoRepository.findAll();
+    }
+
+    // Método para retornar um agendamento por ID
+    @Transactional
+    public Agendamento getAgendamentoById(BigDecimal id) {
+        return agendamentoRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Agendamento não encontrado: " + id));
+    }
+
+    // Método para excluir um agendamento por ID
+    @Transactional
+    public void deleteAgendamento(BigDecimal id) {
         agendamentoRepository.deleteById(id);
     }
 
-    public void update(BigDecimal id, AgendamentoUpdateVO vO) {
-        Agendamento bean = requireOne(id);
-        BeanUtils.copyProperties(vO, bean);
-        agendamentoRepository.save(bean);
-    }
+    // Método para atualizar um agendamento
+    @Transactional
+    public Agendamento updateAgendamento(BigDecimal id, Agendamento agendamento) {
+        Agendamento existingAgendamento = getAgendamentoById(id); // Verifica se o agendamento existe
 
-    public AgendamentoDTO getById(BigDecimal id) {
-        Agendamento original = requireOne(id);
-        return toDTO(original);
-    }
+        // Atualiza os campos do agendamento
+        existingAgendamento.setDataHora(agendamento.getDataHora());
+        existingAgendamento.setEstadoPagamento(agendamento.getEstadoPagamento());
+        existingAgendamento.setObservacoes(agendamento.getObservacoes());
+        existingAgendamento.setIdVeiculo(agendamento.getIdVeiculo());
+        existingAgendamento.setIdFuncionario(agendamento.getIdFuncionario());
 
-    public Page<AgendamentoDTO> query(AgendamentoQueryVO vO) {
-        throw new UnsupportedOperationException();
-    }
-
-    private AgendamentoDTO toDTO(Agendamento original) {
-        AgendamentoDTO bean = new AgendamentoDTO();
-        BeanUtils.copyProperties(original, bean);
-        return bean;
-    }
-
-    private Agendamento requireOne(BigDecimal id) {
-        return agendamentoRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Resource not found: " + id));
+        // Salva as alterações
+        return agendamentoRepository.save(existingAgendamento);
     }
 }

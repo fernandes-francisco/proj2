@@ -1,28 +1,19 @@
 package com.example.proj2.Tables;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
-
-import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Data
 @Entity
 @Table(name = "LinhaEncFornecedor")
-public class LinhaEncFornecedor implements Serializable {
+public class LinhaEncFornecedor {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "IdPeca", nullable = false)
-    private BigDecimal idPeca;
-
-    @Id
-    @Column(name = "IdEncFornecedor", nullable = false)
-    private BigDecimal idEncFornecedor;
+    @EmbeddedId
+    private LinhaEncFornecedorId id;
 
     @Column(name = "Qtd")
     private BigDecimal qtd;
@@ -30,4 +21,38 @@ public class LinhaEncFornecedor implements Serializable {
     @Column(name = "ValorTotal")
     private BigDecimal valorTotal;
 
+    // Getters and Setters
+    public LinhaEncFornecedorId getId() {
+        return id;
+    }
+
+    public void setId(LinhaEncFornecedorId id) {
+        this.id = id;
+    }
+
+    public BigDecimal getQtd() {
+        return qtd;
+    }
+
+    public void setQtd(BigDecimal qtd) {
+        this.qtd = qtd;
+    }
+
+    public BigDecimal getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    // toString method
+    @Override
+    public String toString() {
+        return "LinhaEncFornecedor{" +
+                "id=" + id +
+                ", qtd=" + qtd +
+                ", valorTotal=" + valorTotal +
+                '}';
+    }
 }
